@@ -118,7 +118,7 @@ deno --version
 
 ```bash
 git clone https://github.com/avacocloud/avaco-deno-relay.git
-cd avaco-deno-relay/deno
+cd avaco-deno
 ```
 
 ---
@@ -264,7 +264,7 @@ deno 2.x.x
 
 ```powershell
 git clone https://github.com/avacocloud/avaco-deno.git
-cd avaco-deno/deno
+cd avaco-deno
 ```
 
 ---

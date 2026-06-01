@@ -1,5 +1,7 @@
 <div align="center">
 
+[![Telegram](https://img.shields.io/badge/کانال_تلگرام-@avaco__cloud-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/avaco_cloud)
+
 <h1>🦕 Avaco Deno</h1>
 
 <p>یک ریلی سبک و رایگان برای پروتکل XHTTP روی Deno Deploy</p>

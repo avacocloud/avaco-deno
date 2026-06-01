@@ -222,6 +222,113 @@ done
 
 ---
 
+## 🪟 Windows Deployment
+
+<details>
+<summary>📋 <b>PowerShell Deployment Steps (click to expand)</b></summary>
+
+### 1. Install Deno
+
+Open PowerShell:
+
+```powershell
+irm https://deno.land/install.ps1 | iex
+```
+
+Close and reopen PowerShell, then verify:
+
+```powershell
+deno --version
+```
+
+Expected output:
+```
+deno 2.x.x
+```
+
+---
+
+### 2. Get Access Token
+
+1. Go to **[console.deno.com](https://console.deno.com)**
+2. Create an **Org**
+3. Go to **Settings → Access Tokens → New Token**
+4. Token starts with **`ddo_`**
+
+---
+
+### 3. Clone the Project
+
+```powershell
+git clone https://github.com/avacocloud/avaco-deno.git
+cd avaco-deno/deno
+```
+
+---
+
+### 4. Create App and Deploy
+
+```powershell
+deno deploy create --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP_NAME --source=local --entrypoint=main.ts --region=eu --no-wait .
+```
+
+> ⚠️ **`--no-wait` is required** — without it you'll get a routing error
+
+---
+
+### 5. Set Environment Variables
+
+> ⚠️ On Windows, set each variable **separately**:
+
+```powershell
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP TARGET_DOMAIN "https://YOUR-SERVER:PORT"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP PUBLIC_RELAY_PATH "/api"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP RELAY_PATH "/api"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP RELAY_KEY "your-secret-key"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP UPSTREAM_TIMEOUT_MS "0"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP MAX_INFLIGHT "512"
+```
+
+---
+
+### 6. Verify Deployment
+
+Your app URL:
+```
+https://YOUR_APP.YOUR_ORG.deno.net
+```
+
+```powershell
+curl https://YOUR_APP.YOUR_ORG.deno.net/__debug
+```
+
+Expected output:
+```json
+{
+  "TARGET_BASE": "https://your-server:port",
+  "PUBLIC_RELAY_PATH": "/api",
+  "RELAY_PATH": "/api",
+  "RELAY_KEY_SET": true,
+  "UPSTREAM_TIMEOUT_MS": 0,
+  "MAX_INFLIGHT": 512,
+  "inFlight": 0
+}
+```
+
+---
+
+### Useful Commands
+
+```powershell
+deno deploy env list --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP                                    # View variables
+deno deploy env update-value --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP TARGET_DOMAIN "NEW_VALUE"  # Update variable
+deno deploy --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP --prod --no-wait .                           # Redeploy
+```
+
+</details>
+
+---
+
 ## ⚙️ Environment Variables
 
 | Variable | Required | Default | Description |

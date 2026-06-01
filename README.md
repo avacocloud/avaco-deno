@@ -225,6 +225,113 @@ done
 
 ---
 
+## 🪟 دیپلوی روی ویندوز
+
+<details>
+<summary>📋 <b>مراحل دیپلوی در PowerShell (کلیک کن)</b></summary>
+
+### ۱. نصب Deno
+
+PowerShell رو باز کن:
+
+```powershell
+irm https://deno.land/install.ps1 | iex
+```
+
+بعد از نصب PowerShell رو ببند و دوباره باز کن، بعد تأیید کن:
+
+```powershell
+deno --version
+```
+
+خروجی موفق:
+```
+deno 2.x.x
+```
+
+---
+
+### ۲. دریافت Access Token
+
+۱. برو به **[console.deno.com](https://console.deno.com)**
+۲. یه **Org** بساز
+۳. برو به **Settings → Access Tokens → New Token**
+۴. توکن با **`ddo_`** شروع می‌شه
+
+---
+
+### ۳. کلون پروژه
+
+```powershell
+git clone https://github.com/avacocloud/avaco-deno.git
+cd avaco-deno/deno
+```
+
+---
+
+### ۴. ساخت App و دیپلوی
+
+```powershell
+deno deploy create --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP_NAME --source=local --entrypoint=main.ts --region=eu --no-wait .
+```
+
+> ⚠️ **`--no-wait` ضروریه** — بدونش routing error میده
+
+---
+
+### ۵. ست کردن متغیرها
+
+> ⚠️ روی ویندوز هر متغیر رو **جداگانه** ست کن:
+
+```powershell
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP TARGET_DOMAIN "https://YOUR-SERVER:PORT"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP PUBLIC_RELAY_PATH "/api"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP RELAY_PATH "/api"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP RELAY_KEY "your-secret-key"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP UPSTREAM_TIMEOUT_MS "0"
+deno deploy env add --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP MAX_INFLIGHT "512"
+```
+
+---
+
+### ۶. تست
+
+آدرس اپت:
+```
+https://YOUR_APP.YOUR_ORG.deno.net
+```
+
+```powershell
+curl https://YOUR_APP.YOUR_ORG.deno.net/__debug
+```
+
+خروجی موفق:
+```json
+{
+  "TARGET_BASE": "https://your-server:port",
+  "PUBLIC_RELAY_PATH": "/api",
+  "RELAY_PATH": "/api",
+  "RELAY_KEY_SET": true,
+  "UPSTREAM_TIMEOUT_MS": 0,
+  "MAX_INFLIGHT": 512,
+  "inFlight": 0
+}
+```
+
+---
+
+### دستورات مفید
+
+```powershell
+deno deploy env list --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP          # مشاهده متغیرها
+deno deploy env update-value --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP TARGET_DOMAIN "NEW_VALUE"  # آپدیت
+deno deploy --token=ddo_YOUR_TOKEN --org=YOUR_ORG --app=YOUR_APP --prod --no-wait .  # ری‌دیپلوی
+```
+
+</details>
+
+---
+
 ## ⚙️ متغیرهای محیطی
 
 | متغیر | اجباری | پیش‌فرض | توضیح |
